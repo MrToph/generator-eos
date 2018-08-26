@@ -1,0 +1,48 @@
+{
+  "name": "<%= moduleNameKebabCased %>",
+  "version": "0.0.0-semantically-released",
+  "description": "",
+  "scripts": {
+    "test": "jest",
+    "compile": "eosiocpp -o contract/<%= moduleNameCamelCased %>.wast contract/<%= moduleNameCamelCased %>.cpp && eosiocpp -g contract/<%= moduleNameCamelCased %>.abi contract/<%= moduleNameCamelCased %>.cpp",
+    "deploy": "npm run compile && node scripts/deploy.js",
+    "init": "node scripts/init.js",
+    "@transfer": "node actions/transfer.js",
+    "dump_tables": "node scripts/dump_tables.js"
+  },
+  "author": "<%= fullName %>",
+  "license": "MIT",
+  "eslintConfig": {
+    "extends": [
+      "cmichel/node"
+    ]
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "dependencies": {
+    "binaryen": "^37.0.0",
+    "dotenv": "^6.0.0",
+    "eosjs": "^16.0.6",
+    "lodash": "^4.17.5"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-jest": "^23.2.0",
+    "babel-preset-env": "^1.7.0",
+    "jest": "^22.4.2",
+    "babel-eslint": "^8.2.6",
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb": "^15.1.0",
+    "eslint-config-cmichel": "^1.0.9",
+    "eslint-config-prettier": "^2.10.0",
+    "eslint-plugin-flowtype": "^2.50.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jsx-a11y": "^5.1.1",
+    "eslint-plugin-node": "^5.2.1",
+    "eslint-plugin-prettier": "^2.6.2",
+    "eslint-plugin-react": "^7.11.1",
+    "eslint-plugin-vue": "^4.7.1",
+    "prettier": "^1.14.2"
+  }
+}
