@@ -9,7 +9,8 @@
     "generators"
   ],
   "keywords": [
-    "yeoman-generator"
+    "yeoman-generator",
+    "eos"
   ],
   "author": "Christoph Michel (https://cmichel.io/)",
   "license": "MIT",
