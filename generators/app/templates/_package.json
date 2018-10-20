@@ -4,11 +4,12 @@
   "description": "",
   "scripts": {
     "test": "jest",
-    "compile": "eosiocpp -o contract/<%= moduleNameCamelCased %>.wast contract/<%= moduleNameCamelCased %>.cpp && eosiocpp -g contract/<%= moduleNameCamelCased %>.abi contract/<%= moduleNameCamelCased %>.cpp",
+    "compile": "eosio-cpp contract/testing.cpp -o contract/testing.wasm --abigen",
     "deploy": "npm run compile && node scripts/deploy.js",
     "init": "node scripts/init.js",
-    "@transfer": "node actions/transfer.js",
-    "dump_tables": "node scripts/dump_tables.js"
+    "dump_tables": "node scripts/dump_tables.js",
+    "create_actions": "node scripts/create_actions/index.js",
+    "action": "node scripts/action.js"
   },
   "author": "<%= fullName %>",
   "license": "MIT",
@@ -23,7 +24,9 @@
   "dependencies": {
     "binaryen": "^37.0.0",
     "dotenv": "^6.0.0",
-    "eosjs": "^16.0.6",
+    "ejs": "^2.6.1",
+    "eosjs": "^16.0.9",
+    "fs-extra": "^7.0.0",
     "lodash": "^4.17.5"
   },
   "devDependencies": {
