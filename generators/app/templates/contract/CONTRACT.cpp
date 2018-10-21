@@ -1,39 +1,38 @@
 #include "./<%= moduleNameCamelCased %>.hpp"
 
-#include <eosiolib/asset.hpp>
-#include <eosiolib/action.hpp>        // for SEND_INLINE_ACTION
-#include <cmath> // for pow
-// #include <boost/algorithm/string.hpp> // for split
-
 using namespace eosio;
 using namespace std;
 
-void <%= moduleNameCamelCased %>::init(account_name name)
+void <%= moduleNameCamelCased %>::init(name name)
 {
     require_auth(_self);
-    // make sure table is empty
-    // eosio_assert(table.begin() == table.end(), "already initialized");
 }
 
-void <%= moduleNameCamelCased %>::apply(account_name contract, account_name act)
+void <%= moduleNameCamelCased %>::transfer(name from, name to, asset quantity, string memo)
 {
-    if (contract != _self)
-        return;
-
-    // needed for EOSIO_API macro
-    auto &thiscontract = *this;
-    switch (act)
+    if (from == _self)
     {
-        // first argument is name of CPP class, not contract
-        EOSIO_API(<%= moduleNameCamelCased %>, (init))
-    };
+        // we're sending money, do nothing additional
+        return;
+    }
+
+    eosio_assert(to == _self, "contract is not involved in this transfer");
+    eosio_assert(quantity.symbol.is_valid(), "invalid quantity");
+    eosio_assert(quantity.amount > 0, "only positive quantity allowed");
+    eosio_assert(quantity.symbol == EOS_SYMBOL, "only EOS tokens allowed");
 }
 
-extern "C"
+extern "C" void apply(uint64_t receiver, uint64_t code, uint64_t action)
 {
-    [[noreturn]] void apply(uint64_t receiver, uint64_t code, uint64_t action) {
-        <%= moduleNameCamelCased %> c(receiver);
-        c.apply(code, action);
-        eosio_exit(0);
+    if (code == "eosio.token"_n.value && action == "transfer"_n.value)
+    {
+        eosio::execute_action(eosio::name(receiver), eosio::name(code), &<%= moduleNameCamelCased %>::transfer);
+    }
+    else if (code == receiver)
+    {
+        switch (action)
+        {
+            EOSIO_DISPATCH_HELPER(<%= moduleNameCamelCased %>, (init))
+        }
     }
 }

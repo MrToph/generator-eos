@@ -1,7 +1,6 @@
 const fs = require(`fs-extra`)
 const path = require(`path`)
 const childProcess = require(`child_process`)
-const template = require(`lodash.template`)
 const ejs = require(`ejs`)
 
 const contractDir = `./contract`
@@ -41,7 +40,10 @@ async function script() {
         )
         console.log(actionTemplate)
         const compile = ejs.compile(actionTemplate)
-        const abi = JSON.parse(fs.readFileSync(path.join(contractDir, `testing.abi`)), `utf8`)
+        const abi = JSON.parse(
+            fs.readFileSync(path.join(contractDir, `<%= moduleNameCamelCased %>.abi`)),
+            `utf8`,
+        )
         await fs.emptyDir(actionsDir)
         abi.actions.forEach(action => {
             const data = {

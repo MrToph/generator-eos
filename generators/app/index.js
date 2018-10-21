@@ -40,6 +40,8 @@ module.exports = class extends Generator {
         // copy everything and then rename parts of it
         this.destinationRoot(path.join(this.destinationRoot(), moduleNameKebabCased))
         console.log(this.templatePath(), this.destinationPath())
+
+        // copy interpreting ejs templates in files
         this.fs.copyTpl(
             this.templatePath(),
             this.destinationPath(),
@@ -51,7 +53,13 @@ module.exports = class extends Generator {
                 fullName,
             },
             undefined,
-            { globOptions: { dot: true } },
+            { globOptions: { dot: true, ignore: [`**/*.template.js`] } },
+        )
+
+        // copy without interpreting ejs templates in files
+        this.fs.copy(
+            this.templatePath(`scripts/create_actions/action.template.js`),
+            this.destinationPath(`scripts/create_actions/action.template.js`),
         )
 
         const mv = (from, to) => {

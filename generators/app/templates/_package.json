@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "test": "jest",
-    "compile": "eosio-cpp contract/testing.cpp -o contract/testing.wasm --abigen",
+    "compile": "eosio-cpp contract/<%= moduleNameCamelCased %>.cpp -o contract/<%= moduleNameCamelCased %>.wasm --abigen --contract=<%= moduleNameCamelCased %>",
     "deploy": "npm run compile && node scripts/deploy.js",
     "init": "node scripts/init.js",
     "dump_tables": "node scripts/dump_tables.js",

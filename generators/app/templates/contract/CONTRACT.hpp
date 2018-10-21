@@ -1,26 +1,22 @@
 #include <string>
 
 #include <eosiolib/eosio.hpp>
-#include <eosiolib/currency.hpp>
+#include <eosiolib/asset.hpp>
 
-class <%= moduleNameCamelCased %> : public eosio::contract
+#define EOS_SYMBOL symbol("EOS", 4)
+
+CONTRACT <%= moduleNameCamelCased %> : public eosio::contract
 {
-  public:
-    <%= moduleNameCamelCased %>(account_name self)
-        : contract(self)
-    {
-    }
+    using contract::contract;
 
-    //@abi action init
+  public:
     struct init
     {
         init(){};
-        // action must have a field as of now
-        account_name name;
+        eosio::name name;
         EOSLIB_SERIALIZE(init, (name))
     };
 
-    void init(account_name name);
-    void apply( account_name contract, account_name act );
+    ACTION init(eosio::name name);
+    void transfer(eosio::name from, eosio::name to, eosio::asset quantity, std::string memo);
 };
-
