@@ -7,9 +7,10 @@
     "compile": "eosio-cpp contract/<%= moduleNameCamelCased %>.cpp -o contract/<%= moduleNameCamelCased %>.wasm --abigen --contract=<%= moduleNameCamelCased %>",
     "deploy": "npm run compile && node scripts/deploy.js",
     "init": "node scripts/init.js",
-    "dump_tables": "node scripts/dump_tables.js",
     "create_actions": "node scripts/create_actions/index.js",
-    "action": "node scripts/action.js"
+    "init_blockchain": "node scripts/init_blockchain/index.js",
+    "action": "node scripts/action.js",
+    "table": "node scripts/table.js"
   },
   "author": "<%= fullName %>",
   "license": "MIT",
@@ -22,19 +23,19 @@
     "node": ">=8.0.0"
   },
   "dependencies": {
-    "binaryen": "^37.0.0",
     "dotenv": "^6.0.0",
     "ejs": "^2.6.1",
-    "eosjs": "^16.0.9",
+    "eosjs": "^20.0.0-beta2",
+    "eosjs-ecc": "^4.0.4",
     "fs-extra": "^7.0.0",
-    "lodash": "^4.17.5"
+    "lodash": "^4.17.5",
+    "node-fetch": "^2.2.0"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
-    "babel-jest": "^23.2.0",
-    "babel-preset-env": "^1.7.0",
-    "jest": "^22.4.2",
     "babel-eslint": "^8.2.6",
+    "babel-jest": "^23.6.0",
+    "babel-preset-env": "^1.7.0",
     "eslint": "^4.19.1",
     "eslint-config-airbnb": "^15.1.0",
     "eslint-config-cmichel": "^1.0.9",
@@ -46,6 +47,7 @@
     "eslint-plugin-prettier": "^2.6.2",
     "eslint-plugin-react": "^7.11.1",
     "eslint-plugin-vue": "^4.7.1",
+    "jest": "^23.6.0",
     "prettier": "^1.14.2"
   }
 }

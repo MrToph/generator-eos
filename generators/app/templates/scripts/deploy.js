@@ -1,15 +1,41 @@
 const fs = require(`fs`)
 const path = require(`path`)
-const { eos } = require(`../config`)
+const { sendTransaction, getErrorDetail } = require(`../utils`)
 
-const contractDir = `./contract`
-const wasm = fs.readFileSync(path.join(contractDir, `<%= moduleNameCamelCased %>.wasm`))
-const abi = fs.readFileSync(path.join(contractDir, `<%= moduleNameCamelCased %>.abi`))
+async function deploy() {
+    const { CONTRACT_ACCOUNT } = process.env
+    const contractDir = `./contract`
+    const wasm = fs.readFileSync(path.join(contractDir, `<%= moduleNameCamelCased %>.wasm`))
+    const abi = fs.readFileSync(path.join(contractDir, `<%= moduleNameCamelCased %>.abi`))
 
-// Publish contract to the blockchain
-const codePromise = eos.setcode(process.env.CONTRACT_ACCOUNT, 0, 0, wasm)
-const abiPromise = eos.setabi(process.env.CONTRACT_ACCOUNT, JSON.parse(abi))
+    try {
+        await sendTransaction({
+            account: `eosio`,
+            name: `setcode`,
+            data: {
+                account: CONTRACT_ACCOUNT,
+                vmtype: 0,
+                vmversion: 0,
+                code: wasm.toString(`hex`),
+            },
+        })
+        console.log(`Contract updated`)
+    } catch (error) {
+        console.log(`setcode failed:`, getErrorDetail(error))
+    }
 
-Promise.all([codePromise, abiPromise])
-    .then(`Deployment successful`)
-    .catch(err => console.error(`Deployment failed`, err))
+    try {
+        await sendTransaction({
+            account: `eosio`,
+            name: `setabi`,
+            data: {
+                account: CONTRACT_ACCOUNT,
+                abi: abi.toString(`hex`),
+            },
+        })
+    } catch (error) {
+        console.log(`setabi failed:`, getErrorDetail(error))
+    }
+}
+
+deploy()

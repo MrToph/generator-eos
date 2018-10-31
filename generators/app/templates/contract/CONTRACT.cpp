@@ -22,6 +22,15 @@ void <%= moduleNameCamelCased %>::transfer(name from, name to, asset quantity, s
     eosio_assert(quantity.symbol == EOS_SYMBOL, "only EOS tokens allowed");
 }
 
+void <%= moduleNameCamelCased %>::testreset()
+{
+    require_auth(_self);
+    // auto itr = games.begin();
+    // while(itr != games.end()) {
+    //     itr = games.erase(itr);
+    // }
+}
+
 extern "C" void apply(uint64_t receiver, uint64_t code, uint64_t action)
 {
     if (code == "eosio.token"_n.value && action == "transfer"_n.value)
@@ -32,7 +41,7 @@ extern "C" void apply(uint64_t receiver, uint64_t code, uint64_t action)
     {
         switch (action)
         {
-            EOSIO_DISPATCH_HELPER(<%= moduleNameCamelCased %>, (init))
+            EOSIO_DISPATCH_HELPER(<%= moduleNameCamelCased %>, (init)(testreset))
         }
     }
 }

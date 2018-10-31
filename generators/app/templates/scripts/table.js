@@ -1,12 +1,13 @@
-const { eos } = require(`../config`)
+const { api } = require(`../config`)
 const { getErrorDetail } = require(`../utils`)
 
 const { CONTRACT_ACCOUNT } = process.env
 const ROWS_LIMIT = 99999
 
+// TODO: Fix this and read tables from ABI, currently broken
 async function script() {
     try {
-        const result = await eos.getTableRows({
+        const result = await api.rpc.get_table_rows({
             json: true,
             code: CONTRACT_ACCOUNT,
             scope: CONTRACT_ACCOUNT,

@@ -38,12 +38,13 @@ async function script() {
             path.join(actionTemplatesDir, `action.template.js`),
             `utf8`,
         )
-        console.log(actionTemplate)
         const compile = ejs.compile(actionTemplate)
+
         const abi = JSON.parse(
             fs.readFileSync(path.join(contractDir, `<%= moduleNameCamelCased %>.abi`)),
             `utf8`,
         )
+
         await fs.emptyDir(actionsDir)
         abi.actions.forEach(action => {
             const data = {
@@ -52,13 +53,16 @@ async function script() {
             }
             fs.writeFileSync(path.join(actionsDir, `${action.name}.js`), compile(data))
         })
+
         fs.copyFileSync(
             path.join(actionTemplatesDir, `transfer.js`),
             path.join(actionsDir, `transfer.js`),
         )
+
         childProcess.execSync(`eslint --fix --quiet ${actionsDir}`, {
             stdio: `inherit`,
         })
+
         console.log(`SUCCESS`)
     } catch (ex) {
         console.error(`Error while creating actions\n`, ex.stack)
