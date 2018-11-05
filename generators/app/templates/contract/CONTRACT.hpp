@@ -18,5 +18,6 @@ CONTRACT <%= moduleNameCamelCased %> : public eosio::contract
     };
 
     ACTION init(eosio::name name);
+    ACTION testreset();
     void transfer(eosio::name from, eosio::name to, eosio::asset quantity, std::string memo);
 };
