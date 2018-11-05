@@ -1,9 +1,6 @@
-const fs = require(`fs`)
-const path = require(`path`)
 const ecc = require(`eosjs-ecc`)
-const { sendTransaction } = require(`../../utils`)
 const { api } = require(`../../config`)
-const { getErrorDetail } = require(`../../utils`)
+const { sendTransaction, getErrorDetail, deployContract } = require(`../../utils`)
 
 const EOSIO_TOKEN_ACCOUNT = `eosio.token`
 
@@ -60,40 +57,7 @@ async function createTokenAccount() {
 
 async function deployTokenContract() {
     const contractDir = `./scripts/init_blockchain/eosio.token`
-    const wasm = fs.readFileSync(path.join(contractDir, `eosio.token.wasm`)).toString(`hex`)
-    const abi = fs.readFileSync(path.join(contractDir, `eosio.token.abi`)).toString(`hex`)
-
-    try {
-        await sendTransaction({
-            account: `eosio`,
-            name: `setcode`,
-            actor: EOSIO_TOKEN_ACCOUNT,
-            data: {
-                account: EOSIO_TOKEN_ACCOUNT,
-                vmtype: 0,
-                vmversion: 0,
-                code: wasm,
-            },
-        })
-        console.log(`Contract updated`)
-    } catch (error) {
-        console.error(`setcode failed:`, getErrorDetail(error))
-    }
-
-    try {
-        await sendTransaction({
-            account: `eosio`,
-            name: `setabi`,
-            actor: EOSIO_TOKEN_ACCOUNT,
-            data: {
-                account: EOSIO_TOKEN_ACCOUNT,
-                abi,
-            },
-        })
-        console.log(`ABI updated`)
-    } catch (error) {
-        console.error(`setabi failed:`, getErrorDetail(error))
-    }
+    await deployContract({ account: EOSIO_TOKEN_ACCOUNT, contractDir })
 }
 
 async function issueEosToken() {

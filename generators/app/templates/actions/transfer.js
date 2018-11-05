@@ -1,11 +1,19 @@
-const { eos } = require(`../config`)
-const { getErrorDetail } = require(`../utils`)
+const { sendTransaction, getErrorDetail } = require(`../utils`)
+
+const { CONTRACT_ACCOUNT } = process.env
 
 async function action() {
     try {
-        const now = Date.now() // memo needs to be unique
-        await eos.transfer(`test3`, process.env.CONTRACT_ACCOUNT, `2.0000 EOS`, now, {
-            authorization: `test3`,
+        await sendTransaction({
+            account: `eosio.token`,
+            name: `transfer`,
+            actor: `test1`,
+            data: {
+                from: `test1`,
+                to: CONTRACT_ACCOUNT,
+                quantity: `2.0000 EOS`,
+                memo: new Date().toISOString(),
+            },
         })
         console.log(`SUCCESS`)
     } catch (error) {
