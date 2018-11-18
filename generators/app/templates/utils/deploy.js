@@ -1,20 +1,7 @@
 const fs = require(`fs`)
-const path = require(`path`)
 const { Serialize } = require(`eosjs`)
 const { api } = require(`../config`)
-const { sendTransaction, getErrorDetail } = require(`./others`)
-
-function getDeployableFilesFromDir(dir) {
-    const dirCont = fs.readdirSync(dir)
-    const wasmFileName = dirCont.find(filePath => filePath.match(/.*\.(wasm)$/gi))
-    const abiFileName = dirCont.find(filePath => filePath.match(/.*\.(abi)$/gi))
-    if (!wasmFileName) throw new Error(`Cannot find a ".wasm file" in ${dir}`)
-    if (!abiFileName) throw new Error(`Cannot find an ".abi file" in ${dir}`)
-    return {
-        wasmPath: path.join(dir, wasmFileName),
-        abiPath: path.join(dir, abiFileName),
-    }
-}
+const { sendTransaction, getErrorDetail, getDeployableFilesFromDir } = require(`./others`)
 
 async function deployContract({ account, contractDir }) {
     const { wasmPath, abiPath } = getDeployableFilesFromDir(contractDir)

@@ -3,7 +3,7 @@
   "version": "0.0.0-semantically-released",
   "description": "",
   "scripts": {
-    "test": "jest",
+    "test": "jest --runInBand",
     "compile": "eosio-cpp contract/<%= moduleNameCamelCased %>.cpp -o contract/<%= moduleNameCamelCased %>.wasm --abigen --contract=<%= moduleNameCamelCased %>",
     "deploy": "npm run compile && node scripts/deploy.js",
     "init": "node scripts/init.js",
@@ -48,6 +48,10 @@
     "eslint-plugin-react": "^7.11.1",
     "eslint-plugin-vue": "^4.7.1",
     "jest": "^23.6.0",
+    "jest-extended": "^0.11.0",
     "prettier": "^1.14.2"
+  },
+  "jest": {
+    "setupTestFrameworkScriptFile": "jest-extended"
   }
 }

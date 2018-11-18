@@ -1,14 +1,14 @@
 const fs = require(`fs`)
-const path = require(`path`)
 const { api } = require(`../config`)
-const { getErrorDetail, sendTransaction } = require(`../utils`)
+const { getDeployableFilesFromDir } = require(`../utils`)
 
 const { CONTRACT_ACCOUNT } = process.env
 const contractDir = `./contract`
 
 async function script() {
     const tableName = process.argv[2]
-    const abi = JSON.parse(fs.readFileSync(path.join(contractDir, `testi.abi`)), `utf8`)
+    const { abiPath } = getDeployableFilesFromDir(contractDir)
+    const abi = JSON.parse(fs.readFileSync(abiPath, `utf8`))
     const validTableNames = abi.tables
         ? abi.tables.map(({ name }) => `"${name}"`).join(` `)
         : `No table names`

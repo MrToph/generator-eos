@@ -1,3 +1,5 @@
+const fs = require(`fs`)
+const path = require(`path`)
 const { api } = require(`../config.js`)
 
 const { CONTRACT_ACCOUNT } = process.env
@@ -32,16 +34,31 @@ const sendTransaction = async args => {
     )
 }
 
-function getErrorDetail(error) {
+function getErrorDetail(exception) {
     try {
-        const json = typeof error === `string` ? JSON.parse(error) : JSON.parse(error.message)
-        return json.error.details[0].message
+        const { error } = exception.json
+        let errorString = error.what
+        if (error.details > 0) errorString += `: ${error.details.join(` | `)}`
+        return errorString
     } catch (err) {
-        return error.message
+        return exception.message
+    }
+}
+
+function getDeployableFilesFromDir(dir) {
+    const dirCont = fs.readdirSync(dir)
+    const wasmFileName = dirCont.find(filePath => filePath.match(/.*\.(wasm)$/gi))
+    const abiFileName = dirCont.find(filePath => filePath.match(/.*\.(abi)$/gi))
+    if (!wasmFileName) throw new Error(`Cannot find a ".wasm file" in ${dir}`)
+    if (!abiFileName) throw new Error(`Cannot find an ".abi file" in ${dir}`)
+    return {
+        wasmPath: path.join(dir, wasmFileName),
+        abiPath: path.join(dir, abiFileName),
     }
 }
 
 module.exports = {
     sendTransaction,
     getErrorDetail,
+    getDeployableFilesFromDir,
 }
