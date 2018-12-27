@@ -4,7 +4,8 @@
   "description": "",
   "scripts": {
     "test": "jest --runInBand",
-    "compile": "eosio-cpp contract/<%= moduleNameCamelCased %>.cpp -o contract/<%= moduleNameCamelCased %>.wasm --abigen --contract=<%= moduleNameCamelCased %>",
+    "compile": "make -C build",
+    "compile_deprecated": "eosio-cpp contract/<%= moduleNameCamelCased %>.cpp -o contract/<%= moduleNameCamelCased %>.wasm --abigen --contract=<%= moduleNameCamelCased %>",
     "deploy": "npm run compile && node scripts/deploy.js",
     "init": "node scripts/init.js",
     "create_actions": "node scripts/create_actions/index.js",

@@ -35,7 +35,6 @@ npm run init # creates accounts
 This template uses `cmake` to build the contract. Run the following commands once to setup the process:
 
 ```
-mkdir build
 cd build
 cmake ../contract
 ```
