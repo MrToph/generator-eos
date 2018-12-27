@@ -12,7 +12,7 @@ Run any EOS version with nodeos on docker:
 docker run --name eosio \
     --publish 7777:7777 \
     --publish 127.0.0.1:5555:5555 \
-    --volume ~/Code/contracts:~/Code/contracts \
+    --volume /Users/cmichel/Code/contracts:/Users/cmichel/Code/contracts \
     --detach \
     eosio/eos:latest \
     /bin/bash -c \
