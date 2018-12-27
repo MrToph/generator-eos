@@ -2,7 +2,10 @@
 
 ## eosio-cpp
 
-Requires `eosio-cpp (>v1.3.2)` to be installed from the [eosio.cdt](https://github.com/EOSIO/eosio.cdt) package to compile the smart contract.
+Requires `eosio-cpp (>=v1.3.2)` to be installed from the [eosio.cdt](https://github.com/EOSIO/eosio.cdt) package to compile the smart contract.
+Also needs `cmake` for compiling the smart contract.
+
+(MacOS: `brew install cmake`)
 
 ## Local Blockchain setup
 
@@ -26,6 +29,18 @@ Then deploy the `eosio.token` contract and do other initialization steps by runn
 npm run init_blockchain # deploys eosio.token
 npm run init # creates accounts
 ```
+
+## Compiling
+
+This template uses `cmake` to build the contract. Run the following commands once to setup the process:
+
+```
+mkdir build
+cd build
+cmake ../contract
+```
+
+Now you can run `npm run compile` which will run `make` to create the `.wasm` and `.abi` in `/build`.
 
 ## Deployment
 
