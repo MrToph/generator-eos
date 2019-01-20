@@ -1,5 +1,7 @@
 const fs = require(`fs`)
 const path = require(`path`)
+const { RpcError } = require(`eosjs`)
+
 const { api } = require(`../config.js`)
 
 const { CONTRACT_ACCOUNT } = process.env
@@ -35,14 +37,8 @@ const sendTransaction = async args => {
 }
 
 function getErrorDetail(exception) {
-    try {
-        const { error } = exception.json
-        let errorString = error.what
-        if (error.details > 0) errorString += `: ${error.details.join(` | `)}`
-        return errorString
-    } catch (err) {
-        return exception.message
-    }
+    if (exception instanceof RpcError) return JSON.stringify(exception.json, null, 2)
+    return exception && exception.message
 }
 
 function getDeployableFilesFromDir(dir) {

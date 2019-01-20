@@ -51,10 +51,9 @@ function getKeys() {
 
 const keys = getKeys()
 
-const signatureProvider = new JsSignatureProvider([
-    EOSIO_PRIVATE_KEY,
-    ...uniq(map(keys, ([privateKey]) => privateKey)),
-])
+const signatureProvider = new JsSignatureProvider(
+    [EOSIO_PRIVATE_KEY, ...uniq(map(keys, ([privateKey]) => privateKey))].filter(Boolean),
+)
 const rpc = new JsonRpc(EOS_HTTP_ENDPOINT, { fetch })
 const api = new Api({
     rpc,
