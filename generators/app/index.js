@@ -19,6 +19,7 @@ module.exports = class extends Generator {
                 type: `input`,
                 name: `contractAccount`,
                 message: `Contract Account Name`,
+                validate: (input) => new RegExp('^[a-z][a-z1-5\.]{0,10}([a-z1-5]|^\.)[a-j1-5]?$').test(input) || "Contract name must only contain characters a-z 1-5 and . no greater than 13 in length."
             },
         ]
         if (!this.fullName)
