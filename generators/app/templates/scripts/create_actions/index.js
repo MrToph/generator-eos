@@ -3,7 +3,7 @@ const path = require(`path`)
 const childProcess = require(`child_process`)
 const ejs = require(`ejs`)
 
-const contractDir = `./contract`
+const buildDir = `./build`
 const actionsDir = `./actions`
 const actionTemplatesDir = `./scripts/create_actions`
 
@@ -41,7 +41,7 @@ async function script() {
         const compile = ejs.compile(actionTemplate)
 
         const abi = JSON.parse(
-            fs.readFileSync(path.join(contractDir, `<%= moduleNameCamelCased %>.abi`)),
+            fs.readFileSync(path.join(buildDir, `<%= moduleNameCamelCased %>.abi`)),
             `utf8`,
         )
 
