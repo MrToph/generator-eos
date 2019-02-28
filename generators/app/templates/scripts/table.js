@@ -3,11 +3,11 @@ const { api } = require(`../config`)
 const { getDeployableFilesFromDir } = require(`../utils`)
 
 const { CONTRACT_ACCOUNT } = process.env
-const contractDir = `./contract`
+const buildDir = `./build`
 
 async function script() {
     const tableName = process.argv[2]
-    const { abiPath } = getDeployableFilesFromDir(contractDir)
+    const { abiPath } = getDeployableFilesFromDir(buildDir)
     const abi = JSON.parse(fs.readFileSync(abiPath, `utf8`))
     const validTableNames = abi.tables
         ? abi.tables.map(({ name }) => `"${name}"`).join(` `)
