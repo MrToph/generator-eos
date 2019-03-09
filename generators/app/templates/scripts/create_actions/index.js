@@ -45,7 +45,13 @@ async function script() {
             `utf8`,
         )
 
-        await fs.emptyDir(actionsDir)
+        // Delete all actions except those prepended with '_' 
+        fs.readdirSync(actionsDir)
+            .filter(fileName => fileName[0] !== "_")
+            .map(fileName => path.join(actionsDir, fileName))
+            .forEach(path => fs.removeSync(path))
+
+
         abi.actions.forEach(action => {
             const data = {
                 actionName: action.name,
