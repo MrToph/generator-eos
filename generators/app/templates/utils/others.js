@@ -6,11 +6,20 @@ const { api } = require(`../config.js`)
 
 const { CONTRACT_ACCOUNT } = process.env
 
-const parseTokenString = (tokenString) => {
-    const [stringAmount, symbol] = tokenString.split(" ");
-    const amount = Number(stringAmount);
-    return { amount, symbol };
+const parseTokenString = tokenString => {
+    const [stringAmount, symbol] = tokenString.split(` `)
+    const amount = Number(stringAmount)
+    return { amount, symbol }
 }
+
+const getBalance = async (account, contract = `eosio.token`, tokenSymbol = `EOS`) => {
+    const result = await api.rpc.get_currency_balance(contract, account, tokenSymbol)
+    if (result.length > 0) {
+        return parseTokenString(result[0]).amount
+    } else {
+        return 0
+    }
+};
 
 const createAction = ({
     account = CONTRACT_ACCOUNT,
@@ -77,4 +86,6 @@ module.exports = {
     getTable,
     getErrorDetail,
     getDeployableFilesFromDir,
+    parseTokenString,
+    getBalance
 }
