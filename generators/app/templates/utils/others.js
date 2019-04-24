@@ -6,6 +6,21 @@ const { api } = require(`../config.js`)
 
 const { CONTRACT_ACCOUNT } = process.env
 
+const parseTokenString = tokenString => {
+    const [stringAmount, symbol] = tokenString.split(` `)
+    const amount = Number(stringAmount)
+    return { amount, symbol }
+}
+
+const getBalance = async (account, contract = `eosio.token`, tokenSymbol = `EOS`) => {
+    const result = await api.rpc.get_currency_balance(contract, account, tokenSymbol)
+    if (result.length > 0) {
+        return parseTokenString(result[0]).amount
+    } else {
+        return 0
+    }
+};
+
 const createAction = ({
     account = CONTRACT_ACCOUNT,
     name,
@@ -38,16 +53,16 @@ const sendTransaction = async args => {
 
 const getTable = async (tableName, scope = CONTRACT_ACCOUNT) => {
     return await api.rpc.get_table_rows({
-      json: true,
-      code: CONTRACT_ACCOUNT,
-      scope,
-      table: tableName,
-      lower_bound: 0,
-      upper_bound: -1,
-      limit: 9999,
-      index_position: 1
+        json: true,
+        code: CONTRACT_ACCOUNT,
+        scope,
+        table: tableName,
+        lower_bound: 0,
+        upper_bound: -1,
+        limit: 9999,
+        index_position: 1
     });
-  };
+};
 
 function getErrorDetail(exception) {
     if (exception instanceof RpcError) return JSON.stringify(exception.json, null, 2)
@@ -71,4 +86,6 @@ module.exports = {
     getTable,
     getErrorDetail,
     getDeployableFilesFromDir,
+    parseTokenString,
+    getBalance
 }

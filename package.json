@@ -1,6 +1,6 @@
 {
   "name": "generator-eos",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "Yeoman generator template for EOS blockchain smart contracts wrapped in Node.js utilities",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
